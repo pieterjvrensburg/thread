@@ -218,7 +218,7 @@ class Dispatcher {
         $resultCodes = new SharedData;
         $thread = new Thread($results, $resultCodes, $this->ipcUri);
 
-        if (!$thread->start()) {
+        if (!$thread->start($this->threadStartFlags)) {
             throw new \RuntimeException(
                 'Worker thread failed to start'
             );
@@ -530,7 +530,7 @@ class Dispatcher {
 
     private function setTaskTimeout($seconds) {
         $this->taskTimeout = filter_var($seconds, FILTER_VALIDATE_INT, ['options' => [
-            'min_range' => 0,
+            'min_range' => -1,
             'default' => 30
         ]]);
     }
